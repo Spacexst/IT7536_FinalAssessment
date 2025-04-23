@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookAuthorEditor
+﻿public class Book
 {
-    class Book
+    public string Title;
+    public string Description;
+    public string Category;
+    public string Format;
+    public string Author;
+    public string Genre;
 
+    public Book(string title, string desc, string category, string format, string author, string genre)
     {
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-        public List<string> Genres { get; set; } = new List<string>();
-        public string Format { get; set; }
-
-        public override string ToString()
-        {
-            return Title + " by " + Author;
-        }
-
-       
+        Title = title;
+        Description = desc;
+        Category = category;
+        Format = format;
+        Author = author;
+        Genre = genre;
     }
 }

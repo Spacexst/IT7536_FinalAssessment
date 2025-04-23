@@ -1,59 +1,53 @@
-﻿
-using System.IO;
-
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace BookAuthorEditor
 {
-    public partial class Form1 : Form
+    // ✅ STEP 1: Define EventArgs and Delegate outside Form1
+    public delegate void BookAddedEventHandler(object sender, BookEventArgs e);
+    
 
+    public class BookEventArgs : EventArgs
     {
-        
+        public Book NewBook { get; set; }
+
+        public BookEventArgs(Book book)
+        {
+            NewBook = book;
+        }
+    }
+  
+
+    public partial class Form1 : Form
+    {
+        // ✅ Event declaration
+        public event BookAddedEventHandler BookAdded;
+
         private List<Book> books = new List<Book>();
-
-
         private ArrayList authors = new ArrayList(); // For dynamic author list
         private string[] bookFormats = { "Hardcover", "Paperback", "E-book" }; // Array usage
-        private object txtNewAuthor;
-
 
         public Form1()
         {
-            
             InitializeComponent();
-            cmbFormats.Items.AddRange(bookFormats); // Load array into ComboBox
-
+            cmbFormats.Items.AddRange(bookFormats);
         }
 
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
+            cmbFormats.Items.AddRange(bookFormats);
+
+            if (cmbFormats.Items.Count > 0)
+                cmbFormats.SelectedIndex = 0;
         }
 
-        private void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void lstBooks_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstBooks.SelectedItem is Book selectedBook)
-            {
-                txtTitle.Text = selectedBook.Title;
-                txtAuthor.Text = selectedBook.Author;
-                txtDescription.Text = selectedBook.Description;
-            }
-        }
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Validate input
             if (string.IsNullOrWhiteSpace(txtTitle.Text) ||
                 string.IsNullOrWhiteSpace(txtAuthor.Text) ||
                 cmbCategory.SelectedItem == null)
@@ -62,40 +56,34 @@ namespace BookAuthorEditor
                 return;
             }
 
-            // Get selected genres from CheckedListBox
             List<string> selectedGenres = new List<string>();
             foreach (var item in clbGenres.CheckedItems)
             {
                 selectedGenres.Add(item.ToString());
             }
 
-            // Add author if not already added
-           
-
-
             if (!authors.Contains(txtAuthor.Text))
             {
                 authors.Add(txtAuthor.Text);
                 lstAuthors.Items.Add(txtAuthor.Text);
             }
+            Book newBook = new Book(
+            txtTitle.Text,
+            txtDescription.Text,
+            cmbCategory.SelectedItem?.ToString(),
+            cmbFormats.SelectedItem?.ToString(),
+            txtAuthor.Text,
+            string.Join(", ", clbGenres.CheckedItems.Cast<string>())
+);
 
 
 
-            // Create new book
-            Book newBook = new Book
-            {
-                Title = txtTitle.Text,
-                Author = txtAuthor.Text,
-                Description = txtDescription.Text,
-                Category = cmbCategory.SelectedItem.ToString(),
-                Genres = selectedGenres
-            };
-
-            // Add to list and ListBox
             books.Add(newBook);
-            lstBooks.Items.Add(newBook); // Uses ToString()
+            lstBooks.Items.Add(newBook);
 
-            // Clear inputs
+            // ✅ Custom event trigger
+            BookAdded?.Invoke(this, new BookEventArgs(newBook));
+
             txtTitle.Clear();
             txtAuthor.Clear();
             txtDescription.Clear();
@@ -106,8 +94,70 @@ namespace BookAuthorEditor
             }
         }
 
-        private void btnSaveText_Click(object sender, EventArgs e)
+        private void btnAddAuthor_Click(object sender, EventArgs e)
+        {
+            string newAuthor = txtAuthorName.Text.Trim();
 
+            if (!string.IsNullOrEmpty(newAuthor) && !authors.Contains(newAuthor))
+            {
+                authors.Add(newAuthor);
+                lstAuthors.Items.Add(newAuthor);
+                txtAuthorName.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Please enter a unique author name.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Optional: logic when a genre is selected
+        }
+
+        private void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Optional: logic when category changes
+        }
+
+
+        // 🎨 Style and text handling events remain unchanged
+        private void rbBlack_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbBlack.Checked)
+                txtDescription.ForeColor = Color.Black;
+        }
+
+        private void rbRed_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbRed.Checked)
+                txtDescription.ForeColor = Color.Red;
+        }
+
+        private void rbBlue_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbBlue.Checked)
+                txtDescription.ForeColor = Color.Blue;
+        }
+
+        private void rbArial_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbArial.Checked)
+                txtDescription.Font = new Font("Arial", txtDescription.Font.Size);
+        }
+
+        private void rbTimesNewRoman_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbTimesNewRoman.Checked)
+                txtDescription.Font = new Font("Times New Roman", txtDescription.Font.Size);
+        }
+
+        private void rbComicSans_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbComicSans.Checked)
+                txtDescription.Font = new Font("Comic Sans MS", txtDescription.Font.Size);
+        }
+
+        private void btnSaveText_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -135,101 +185,15 @@ namespace BookAuthorEditor
                 }
             }
         }
-        private void rbBlack_CheckedChanged(object sender, EventArgs e)
+
+        private void lstBooks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (rbArial.Checked)
+            if (lstBooks.SelectedItem is Book selectedBook)
             {
-                txtDescription.ForeColor = Color.Black;
+                txtTitle.Text = selectedBook.Title;
+                txtAuthor.Text = selectedBook.Author;
+                txtDescription.Text = selectedBook.Description;
             }
-        }
-        private void rbRed_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbRed.Checked)
-            {
-                txtDescription.ForeColor = Color.Red;
-            }
-        }
-        private void rbBlue_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbBlue.Checked)
-            {
-                txtDescription.ForeColor = Color.Blue;
-            }
-        }
-
-        private void rbArial_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbArial.Checked)
-            {
-                txtDescription.Font = new Font("Arial", txtDescription.Font.Size);
-            }
-        }
-
-        private void rbTimesNew_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void rbTimesNewRoman_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbTimesNewRoman.Checked)
-            {
-                txtDescription.Font = new Font("Times New Roman", txtDescription.Font.Size);
-            }
-
-        }
-
-        private void rbComicSans_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbComicSans.Checked)
-            {
-                txtDescription.Font = new Font("Comic Sans MS", txtDescription.Font.Size);
-            }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        {
-            // Populate ComboBox with bookFormats array
-            cmbFormats.Items.AddRange(bookFormats);
-
-            // Optional: Set first item selected
-            if (cmbFormats.Items.Count > 0)
-                cmbFormats.SelectedIndex = 0;
-        }
-
-    }
-
-        private void btnAddAuthor_Click(object sender, EventArgs e)
-            
-        {
-            string newAuthor = txtAuthorName.Text.Trim();
-
-            if (!string.IsNullOrEmpty(newAuthor) && !authors.Contains(newAuthor))
-            {
-                authors.Add(newAuthor);
-                lstAuthors.Items.Add(newAuthor);
-                txtAuthorName.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Please enter a unique author name.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-       
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
+}
