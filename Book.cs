@@ -14,10 +14,13 @@ namespace BookAuthorEditor
         public string Description { get; set; }
         public string Category { get; set; }
         public List<string> Genres { get; set; } = new List<string>();
+        public string Format { get; set; }
 
         public override string ToString()
         {
-            return $"{Title} by {Author} ({Category})";
+            return Title + " by " + Author;
         }
+
+       
     }
 }

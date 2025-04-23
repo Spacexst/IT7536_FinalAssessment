@@ -10,16 +10,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System;
+using System.Collections;
 
 namespace BookAuthorEditor
 {
     public partial class Form1 : Form
 
     {
+        
         private List<Book> books = new List<Book>();
+
+
+        private ArrayList authors = new ArrayList(); // For dynamic author list
+        private string[] bookFormats = { "Hardcover", "Paperback", "E-book" }; // Array usage
+        private object txtNewAuthor;
+
+
         public Form1()
         {
+            
             InitializeComponent();
+            cmbFormats.Items.AddRange(bookFormats); // Load array into ComboBox
+
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -56,6 +68,18 @@ namespace BookAuthorEditor
             {
                 selectedGenres.Add(item.ToString());
             }
+
+            // Add author if not already added
+           
+
+
+            if (!authors.Contains(txtAuthor.Text))
+            {
+                authors.Add(txtAuthor.Text);
+                lstAuthors.Items.Add(txtAuthor.Text);
+            }
+
+
 
             // Create new book
             Book newBook = new Book
@@ -133,9 +157,71 @@ namespace BookAuthorEditor
             }
         }
 
-     
+        private void rbArial_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbArial.Checked)
+            {
+                txtDescription.Font = new Font("Arial", txtDescription.Font.Size);
+            }
+        }
+
+        private void rbTimesNew_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rbTimesNewRoman_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbTimesNewRoman.Checked)
+            {
+                txtDescription.Font = new Font("Times New Roman", txtDescription.Font.Size);
+            }
+
+        }
+
+        private void rbComicSans_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbComicSans.Checked)
+            {
+                txtDescription.Font = new Font("Comic Sans MS", txtDescription.Font.Size);
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        {
+            // Populate ComboBox with bookFormats array
+            cmbFormats.Items.AddRange(bookFormats);
+
+            // Optional: Set first item selected
+            if (cmbFormats.Items.Count > 0)
+                cmbFormats.SelectedIndex = 0;
+        }
+
     }
-}
+
+        private void btnAddAuthor_Click(object sender, EventArgs e)
+            
+        {
+            string newAuthor = txtAuthorName.Text.Trim();
+
+            if (!string.IsNullOrEmpty(newAuthor) && !authors.Contains(newAuthor))
+            {
+                authors.Add(newAuthor);
+                lstAuthors.Items.Add(newAuthor);
+                txtAuthorName.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Please enter a unique author name.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+       
+        }
+    }
+
 
 
 

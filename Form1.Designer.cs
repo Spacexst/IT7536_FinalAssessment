@@ -51,6 +51,11 @@
             this.rbComicSans = new System.Windows.Forms.RadioButton();
             this.rbTimesNewRoman = new System.Windows.Forms.RadioButton();
             this.rbArial = new System.Windows.Forms.RadioButton();
+            this.tabFormatsAuthors = new System.Windows.Forms.TabPage();
+            this.lstAuthors = new System.Windows.Forms.ListBox();
+            this.btnAddAuthor = new System.Windows.Forms.Button();
+            this.txtAuthorName = new System.Windows.Forms.TextBox();
+            this.cmbFormats = new System.Windows.Forms.ComboBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.linkAuthor = new System.Windows.Forms.LinkLabel();
@@ -63,6 +68,7 @@
             this.tabStyle.SuspendLayout();
             this.grpColors.SuspendLayout();
             this.grpFont.SuspendLayout();
+            this.tabFormatsAuthors.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelInput
@@ -133,6 +139,7 @@
             this.tabControl1.Controls.Add(this.tabControlName);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabStyle);
+            this.tabControl1.Controls.Add(this.tabFormatsAuthors);
             this.tabControl1.Location = new System.Drawing.Point(370, 10);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -281,7 +288,6 @@
             this.grpFont.TabIndex = 0;
             this.grpFont.TabStop = false;
             this.grpFont.Text = "Chose Font";
-            //this.grpFont.Enter += new System.EventHandler(this.grpFont_Enter);
             // 
             // rbComicSans
             // 
@@ -293,6 +299,7 @@
             this.rbComicSans.TabStop = true;
             this.rbComicSans.Text = "Comic Sans\r\n MS";
             this.rbComicSans.UseVisualStyleBackColor = true;
+            this.rbComicSans.CheckedChanged += new System.EventHandler(this.rbComicSans_CheckedChanged);
             // 
             // rbTimesNewRoman
             // 
@@ -304,6 +311,7 @@
             this.rbTimesNewRoman.TabStop = true;
             this.rbTimesNewRoman.Text = "Times New\r\n Roman";
             this.rbTimesNewRoman.UseVisualStyleBackColor = true;
+            this.rbTimesNewRoman.CheckedChanged += new System.EventHandler(this.rbTimesNewRoman_CheckedChanged);
             // 
             // rbArial
             // 
@@ -315,11 +323,61 @@
             this.rbArial.TabStop = true;
             this.rbArial.Text = "Arial";
             this.rbArial.UseVisualStyleBackColor = true;
-            this.rbArial.CheckedChanged += new System.EventHandler(this.rbBlack_CheckedChanged);
+            this.rbArial.CheckedChanged += new System.EventHandler(this.rbArial_CheckedChanged);
+            // 
+            // tabFormatsAuthors
+            // 
+            this.tabFormatsAuthors.Controls.Add(this.lstAuthors);
+            this.tabFormatsAuthors.Controls.Add(this.btnAddAuthor);
+            this.tabFormatsAuthors.Controls.Add(this.txtAuthorName);
+            this.tabFormatsAuthors.Controls.Add(this.cmbFormats);
+            this.tabFormatsAuthors.Location = new System.Drawing.Point(4, 25);
+            this.tabFormatsAuthors.Name = "tabFormatsAuthors";
+            this.tabFormatsAuthors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFormatsAuthors.Size = new System.Drawing.Size(430, 185);
+            this.tabFormatsAuthors.TabIndex = 3;
+            this.tabFormatsAuthors.Text = "Formats & Authors";
+            this.tabFormatsAuthors.UseVisualStyleBackColor = true;
+            // 
+            // lstAuthors
+            // 
+            this.lstAuthors.FormattingEnabled = true;
+            this.lstAuthors.ItemHeight = 16;
+            this.lstAuthors.Location = new System.Drawing.Point(178, 90);
+            this.lstAuthors.Name = "lstAuthors";
+            this.lstAuthors.Size = new System.Drawing.Size(120, 84);
+            this.lstAuthors.TabIndex = 10;
+            // 
+            // btnAddAuthor
+            // 
+            this.btnAddAuthor.Location = new System.Drawing.Point(20, 133);
+            this.btnAddAuthor.Name = "btnAddAuthor";
+            this.btnAddAuthor.Size = new System.Drawing.Size(75, 23);
+            this.btnAddAuthor.TabIndex = 9;
+            this.btnAddAuthor.Text = "Add Author";
+            this.btnAddAuthor.UseVisualStyleBackColor = true;
+            this.btnAddAuthor.Click += new System.EventHandler(this.btnAddAuthor_Click);
+            // 
+            // txtAuthorName
+            // 
+            this.txtAuthorName.Location = new System.Drawing.Point(20, 96);
+            this.txtAuthorName.Name = "txtAuthorName";
+            this.txtAuthorName.Size = new System.Drawing.Size(100, 22);
+            this.txtAuthorName.TabIndex = 1;
+            this.txtAuthorName.Text = "Author";
+            // 
+            // cmbFormats
+            // 
+            this.cmbFormats.FormattingEnabled = true;
+            this.cmbFormats.Location = new System.Drawing.Point(129, 51);
+            this.cmbFormats.Name = "cmbFormats";
+            this.cmbFormats.Size = new System.Drawing.Size(121, 24);
+            this.cmbFormats.TabIndex = 0;
+            this.cmbFormats.Text = "Select Book Format";
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(37, 288);
+            this.btnAdd.Location = new System.Drawing.Point(45, 367);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 2;
@@ -329,7 +387,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(216, 288);
+            this.btnClear.Location = new System.Drawing.Point(254, 367);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 5;
@@ -379,6 +437,7 @@
             this.Controls.Add(this.panelInput);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.panelInput.ResumeLayout(false);
             this.panelInput.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -389,6 +448,8 @@
             this.grpColors.PerformLayout();
             this.grpFont.ResumeLayout(false);
             this.grpFont.PerformLayout();
+            this.tabFormatsAuthors.ResumeLayout(false);
+            this.tabFormatsAuthors.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,6 +485,11 @@
         private System.Windows.Forms.RadioButton rbComicSans;
         private System.Windows.Forms.RadioButton rbTimesNewRoman;
         private System.Windows.Forms.RadioButton rbArial;
+        private System.Windows.Forms.TabPage tabFormatsAuthors;
+        private System.Windows.Forms.ComboBox cmbFormats;
+        private System.Windows.Forms.ListBox lstAuthors;
+        private System.Windows.Forms.Button btnAddAuthor;
+        private System.Windows.Forms.TextBox txtAuthorName;
     }
 }
 
