@@ -75,8 +75,8 @@ namespace BookAuthorEditor
                 txtTitle.Text,
                 txtDescription.Text,
                 clbGenres.SelectedItem.ToString(),
-                cmbGenre.SelectedItem?.ToString(),
-                txtAuthor.Text
+                txtAuthor.Text,
+                cmbGenre.SelectedItem?.ToString()
             );
             // Check if the book already exists to prevent duplicates
             if (!BookExists(newBook))
@@ -84,6 +84,7 @@ namespace BookAuthorEditor
                 books.Add(newBook);
                 bookCounter.Add();
                 lstBooks.Items.Add(newBook.Title + " by " + newBook.Author);
+                ClearFields();
             }
             else
             {
@@ -216,6 +217,11 @@ namespace BookAuthorEditor
 
         // Clear input fields when Clear button is clicked
         private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearFields();
+        }
+
+        private void ClearFields()
         {
             txtAuthor.Text = string.Empty;
             txtDescription.Text = string.Empty;
