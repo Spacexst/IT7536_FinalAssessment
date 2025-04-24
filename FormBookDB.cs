@@ -33,8 +33,7 @@ namespace BookAuthorEditor
         // ArrayList to dynamically manage authors
         private ArrayList authors = new ArrayList(); 
 
-        // Array to store predefined book formats
-        private string[] bookFormats = { "Hardcover", "Paperback", "E-book" };
+        
         private Counter bookCounter;
 
         public FormBookDB()
@@ -74,7 +73,7 @@ namespace BookAuthorEditor
             Book newBook = new Book(
                 txtTitle.Text,
                 txtDescription.Text,
-                clbGenres.SelectedItem.ToString(),
+                clbCategory.SelectedItem.ToString(),
                 txtAuthor.Text,
                 cmbGenre.SelectedItem?.ToString()
             );
@@ -113,26 +112,17 @@ namespace BookAuthorEditor
         // Change font color of the description based on radio button selection
         private void rbBlack_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBlack.Checked)
-            {
-                txtDescription.ForeColor = Color.Black;
-            }
+            txtDescription.ForeColor = Color.Black;
         }
 
         private void rbRed_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbRed.Checked)
-            {
-                txtDescription.ForeColor = Color.Red;
-            }
+            txtDescription.ForeColor = Color.Red;
         }
 
         private void rbBlue_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBlue.Checked)
-            {
-                txtDescription.ForeColor = Color.Blue;
-            }
+            txtDescription.ForeColor = Color.Blue;
         }
 
         // Change font family of the description based on radio button selection

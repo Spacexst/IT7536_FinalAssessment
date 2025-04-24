@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.clbGenres = new System.Windows.Forms.CheckedListBox();
+            this.clbCategory = new System.Windows.Forms.CheckedListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbGenre = new System.Windows.Forms.ComboBox();
@@ -64,19 +64,19 @@
             this.grpFont.SuspendLayout();
             this.SuspendLayout();
             // 
-            // clbGenres
+            // clbCategory
             // 
-            this.clbGenres.FormattingEnabled = true;
-            this.clbGenres.Items.AddRange(new object[] {
+            this.clbCategory.FormattingEnabled = true;
+            this.clbCategory.Items.AddRange(new object[] {
             "Mystery",
             " Sci-Fi",
             "Fantasy",
             "Romance"});
-            this.clbGenres.Location = new System.Drawing.Point(97, 370);
-            this.clbGenres.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.clbGenres.Name = "clbGenres";
-            this.clbGenres.Size = new System.Drawing.Size(513, 72);
-            this.clbGenres.TabIndex = 4;
+            this.clbCategory.Location = new System.Drawing.Point(97, 370);
+            this.clbCategory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.clbCategory.Name = "clbCategory";
+            this.clbCategory.Size = new System.Drawing.Size(513, 72);
+            this.clbCategory.TabIndex = 4;
             // 
             // label4
             // 
@@ -174,7 +174,7 @@
             // tabBookDetails
             // 
             this.tabBookDetails.Controls.Add(this.lbl5);
-            this.tabBookDetails.Controls.Add(this.clbGenres);
+            this.tabBookDetails.Controls.Add(this.clbCategory);
             this.tabBookDetails.Controls.Add(this.txtDescription);
             this.tabBookDetails.Controls.Add(this.label4);
             this.tabBookDetails.Controls.Add(this.txtTitle);
@@ -274,9 +274,9 @@
             this.rbRed.Name = "rbRed";
             this.rbRed.Size = new System.Drawing.Size(54, 20);
             this.rbRed.TabIndex = 1;
-            this.rbRed.TabStop = true;
             this.rbRed.Text = "Red";
             this.rbRed.UseVisualStyleBackColor = true;
+            this.rbRed.CheckedChanged += new System.EventHandler(this.rbRed_CheckedChanged);
             // 
             // rbBlack
             // 
@@ -439,7 +439,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lstBooks;
         private System.Windows.Forms.ComboBox cmbGenre;
-        private System.Windows.Forms.CheckedListBox clbGenres;
+        private System.Windows.Forms.CheckedListBox clbCategory;
         private System.Windows.Forms.LinkLabel linkSourceCode;
         private System.Windows.Forms.Button btnSaveText;
         private System.Windows.Forms.Button btnLoadText;
